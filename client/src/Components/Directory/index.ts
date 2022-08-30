@@ -1,4 +1,3 @@
-import Directories from "./Directory";
+import Directory from "./Directory";
 
-
-export default Directories;
+export default Directory;

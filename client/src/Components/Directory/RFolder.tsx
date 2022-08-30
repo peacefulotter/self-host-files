@@ -9,7 +9,7 @@ interface IFolder {
 
 const RFolder: FC<IFolder> = ( { path } ) => {
     return (
-        <Link to={path} className="repo-elt">
+        <Link to={path} className="repo-elt repo-elt-folder">
             <FcFolder className='repo-icon'/>
             <div className="elt-name">{path}</div>
         </Link>

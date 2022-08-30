@@ -24,32 +24,29 @@ app.get( '/', (req, res) => {
     return res.status(200).send("It's working");
 } );
 
-app.get('/repos', async (req, res) => {
+app.get('/repos', async (req, res, next) => {
     const { path } = req.query;
     console.log(path);
-    const content = await readDirectory(FOLDER_PATH, path as string)
-    res.json(content)
+    readDirectory(FOLDER_PATH, path as string)
+        .then( resp => res.json(resp) )
+        .catch( next )
 } )
 
-app.post('/upload', async (req, res) => {
-
-    console.log(req.files);
+app.post('/upload', async (req, res, next) => {
     const files: UploadedFile | UploadedFile[] = req.files['file[]'];
-    console.log(files);
+    const arrFiles = Array.isArray( files ) ? files : [ files ]
 
-    if ( Array.isArray(files) )
-    {
-        const resps = await Promise.all( files.map( saveFile(FOLDER_PATH) ) )
-        resps.forEach( (r, i) => console.log(i, r) );
-        res.json( resps )
+    Promise.all( arrFiles.map( saveFile(FOLDER_PATH) ) )
+        .then( resp => res.json(resp) )
+        .catch( next )
     }
-    else
-    {
-        const resp = await saveFile( FOLDER_PATH )( files )
-        console.log(resp);
-        res.json( [ resp ] )
-    }
-})
+)
+
+app.use( (err: any, req: any, res: any, next: any) => {
+    console.error('ERROR', err.stack);
+    res.status(500).send(err.stack);
+} );
+
 
 app.listen( PORT, () => {
     console.log(`Server running on ${PORT}`);

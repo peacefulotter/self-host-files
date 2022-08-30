@@ -1,6 +1,5 @@
 
 .upload-form {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,22 +38,8 @@
 
 .upload-btn {
   position: relative;
-  background: none;
   height: min-content;
-  padding: 10px 25px;
-  border-radius: 10px;
-  color: var(--primary);
-  cursor: pointer;
   overflow: hidden;
-  text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 1px;
-  transition: background-color 400ms ease, color 300ms ease;
-}
-
-.upload-btn:disabled {
-  color: grey;
-  background: none;
 }
 
 .upload-btn:hover:disabled {
@@ -64,11 +49,6 @@
 
 .upload-btn-complete {
   color: white !important;
-}
-
-.upload-btn:hover {
-  color: white;
-  background: var(--primary);
 }
 
 .upload-btn-progress {
@@ -92,12 +72,27 @@
   font-size: 1.4em;
 }
 
-.toast-img {
-  position: absolute;
-  object-fit: cover; 
-  width: 50px;
+.file-list {
+  width: 100%;
+  height: '90vh';
+  padding-bottom: 100px;
+  overflow-y: 'scroll';
+}
+
+.file-row {
+  width: 100%;
   height: 50px;
-  margin-left: -25px;
-  margin-top: -25px;
+  padding: 0px 20px;
+  display: grid;
+  grid-template-columns: 30px 15% auto 30px;
+  align-items: center;
+}
+
+
+
+.toast-img {
+  object-fit: cover; 
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
 }

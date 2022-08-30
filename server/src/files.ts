@@ -18,22 +18,18 @@ export const saveFile = ( folder: string ) => ( file: UploadedFile ) => new Prom
     });
 } )
 
-export const readDirectory =  async ( folder: string, path: string ) => {
+export const readDirectory = async ( folder: string, path: string ) => {
     const res = []
-    try 
+    const currentPath = folder + path;
+    const files = await readdirAsync( currentPath )
+    for ( const filename of files )
     {
-        const currentPath = folder + path;
-        const files = await readdirAsync( currentPath )
-        for ( const filename of files )
-        {
-            const filePath = currentPath + '/' + filename;
-            const stats = await statAsync(filePath)
-            const isDirectory = stats.isDirectory()
-            res.push( { path: filename, isDirectory } )
-        }
-    }
-    catch {
-        console.log('Directory not found');
+        const filePath = currentPath + '/' + filename;
+        const stats = await statAsync(filePath)
+        const isDirectory = stats.isDirectory()
+        const file = { path: filename, isDirectory }
+        if ( isDirectory ) res.unshift( file )
+        else res.push( file )
     }
     return res;
 }

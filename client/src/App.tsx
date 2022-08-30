@@ -1,15 +1,28 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Directories from './Components/Directory';
 import Upload from './Components/Upload';
 
+import Directory from './Components/Directory';
+import Path from './Components/Directory/Path';
+import Menu from './Components/Directory/Menu';
+
 import './App.css';
+import './css/btn.css'
 
 function App() {
 	return (
 		<BrowserRouter>
 			<div className="App">
 				<Upload />
-				<Directories />
+				<div className="directories-wrapper">
+					<div className="dir-header">
+						<Path />
+						<Menu />
+					</div>
+					<Routes>
+						<Route path="/" element={<Directory />} />
+						<Route path="/:dir" element={<Directory />} />
+					</Routes>
+				</div>
 			</div>
 		</BrowserRouter>
 	);

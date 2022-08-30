@@ -59,7 +59,7 @@ const Upload = () => {
 			<div className="form-header">
 				<input className="inputfile" id="file" type="file" name="file" multiple onChange={handleFileChange} />
 				<label htmlFor="file"><HiOutlineUpload className="select-btn"/></label>
-				<button className={`upload-btn ${state === 'complete' ? 'upload-btn-complete' : ''}`} disabled={!(state === 'loaded')}>
+				<button className={`btn upload-btn ${state === 'complete' ? 'upload-btn-complete' : ''}`} disabled={!(state === 'loaded')}>
 					<div className="upload-btn-progress" style={{width: `${progress}%`}}></div>
 					<span className='upload-btn-text'>{btnTexts[state]}{state === 'loaded' ? <RiUploadCloud2Line /> : null}</span>
 				</button>

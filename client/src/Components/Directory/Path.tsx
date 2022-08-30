@@ -15,7 +15,7 @@ const Path = () => {
     console.log(pathname, unveil, navigations);
     
     return (
-        <Breadcrumb aria-label="Default breadcrumb example">
+        <Breadcrumb className="path-breadcrumb" aria-label="Default breadcrumb example">
             <Breadcrumb.Item href="/" icon={HiHome}>Home</Breadcrumb.Item>
             { unveil.map( (path, i) => 
                 <Breadcrumb.Item key={`bc-${i}`} href={navigations[i]}>
