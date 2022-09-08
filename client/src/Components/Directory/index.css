@@ -33,6 +33,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 200ms ease;
 }
 
 .repo-elt-folder:hover, .repo-elt-file:hover {
@@ -40,7 +41,11 @@
 }
 
 .repo-elt-file:hover {
-  filter: brightness(80%);
+  filter: brightness(90%);
+}
+
+.repo-elt-file:hover img {
+  transform: scale(110%) !important;
 }
 
 .repo-icon {
