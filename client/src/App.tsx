@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Upload from './Components/Upload';
 
 import Directory from './Components/Directory';
@@ -19,8 +19,7 @@ function App() {
 						<Menu />
 					</div>
 					<Routes>
-						<Route path="/" element={<Directory />} />
-						<Route path="/:dir" element={<Directory />} />
+						<Route path="*" element={<Directory />} />
 					</Routes>
 				</div>
 			</div>

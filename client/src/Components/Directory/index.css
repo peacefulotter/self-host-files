@@ -23,7 +23,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 7px;
   cursor: pointer;
   text-decoration: none;
   color: var(--grey);

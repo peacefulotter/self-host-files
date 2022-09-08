@@ -6,37 +6,35 @@ import { useLocation, useMatch } from 'react-router-dom';
 
 import RFolder from './RFolder';
 import RFile from './RFile';
-import Path from './Path';
-import Menu from './Menu';
 
 import './index.css'
 
-
-interface Repo {
-    path: string;
-    isDirectory: boolean;
-}
-
 const Directory = () => {
 
-    const [ repos, setRepos ] = useState<Repo[]>([]);
+    const [ folders, setFolders ] = useState<string[]>([]);
+    const [ files, setFiles ] = useState<string[]>([]);
     const { pathname } = useLocation();
 
     useEffect( () => {
-        axios
-            .get('/repos', { params: { path: pathname } } )
-            .then( res => res.status === 200 
-                ? setRepos(res.data as Repo[])
-                : console.log('err', res)
-            )
-    }, [] )
+        axios.get('/repos', { params: { path: pathname } } )
+            .then( res => {
+                if ( res.status !== 200 ) 
+                    console.log('err', res)
+
+                const { folders, files } = res.data;
+                setFolders(folders)
+                setFiles(files)
+            } )
+    }, [pathname] )
 
     return (
         <div className="directories">
-            { repos.map( ( { isDirectory, path }, i) => 
-                isDirectory 
-                    ? <RFolder key={`folder-${i}`} path={path}></RFolder>
-                    : <RFile key={`file-${i}`} path={path}></RFile>
+            { folders.map( ( name, i) => 
+                <RFolder key={`folder-${i}`} path={name}></RFolder>
+            ) }
+            <div className='w-full' />
+            { files.map( ( name, i ) => 
+                <RFile key={`file-${i}`} path={name}></RFile>
             ) }
         </div>
     )

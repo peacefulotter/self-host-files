@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Table } from "flowbite-react";
 import { HiOutlineX } from "react-icons/hi";
+import FileIcon from "../FileIcon";
 import FileImg from "./FileImg";
 
 interface IFileList {
@@ -10,16 +10,15 @@ interface IFileList {
 
 const FileElt = ( { index, file, remFile }: { index: number, file: File, remFile: (i: number) => void } ) => {
     
+    console.log(file.name);
+    
     return (
         <div className="file-row">
-            <div>{index}</div>
-            <div><FileImg file={file} /></div>
-            <div className="ml-5 mr-5 text-sm font-medium overflow-ellipsis whitespace-nowrap overflow-hidden" style={{color: '#333', maxWidth: '13vw'}}>
+            <FileIcon extension={file.name} size={2} />
+            <div className="text-sm font-medium overflow-ellipsis whitespace-nowrap overflow-hidden" style={{color: '#333', maxWidth: '13vw'}}>
                 {file.name}
             </div>
-            <div>
-                <HiOutlineX type="button" className="text-right cursor-pointer font-medium rounded-lg text-xl text-center inline-flex dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700" onClick={() => remFile(index)} />
-            </div>
+            <HiOutlineX type="button" className="ml-auto cursor-pointer text-gray-500 hover:text-gray-800 hover:text-lg" onClick={() => remFile(index)} />
         </div>
     )
 }

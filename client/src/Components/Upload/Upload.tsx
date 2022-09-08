@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { HiOutlineUpload } from "react-icons/hi";
+import { FiPlus, FiX } from "react-icons/fi";
 import { RiUploadCloud2Line } from "react-icons/ri";
 
 import FileList from "./FileList";
@@ -17,7 +17,7 @@ const btnTexts: Record<States, string> = {
 }
 
 const Upload = () => {
-    const [files, setFiles] = useState<File[]>();
+    const [files, setFiles] = useState<File[]>([]);
 	const [state, setState] = useState<States>('disabled')
 	const [progress, setProgress] = useState(0); 
 
@@ -35,13 +35,13 @@ const Upload = () => {
 		.then( (res: any) => {
 			console.log(res);
 			setState('complete');
-			setFiles(undefined)
+			setFiles([])
 		});
 	}
 
-	const handleFileChange = (e: any) => {
+	const addFiles = (e: any) => {
 		setProgress(0)
-		setFiles([...e.target.files]);
+		setFiles(prev => [...prev, ...e.target.files]);
 		setState('loaded')
 	}
 
@@ -54,11 +54,24 @@ const Upload = () => {
 			setState('disabled')
 	}
 
+	const remFiles = () => {
+		setFiles([])
+		setState('disabled')
+	}
+
     return (
 		<form className="upload-form" onSubmit={handleUpload}>
 			<div className="form-header">
-				<input className="inputfile" id="file" type="file" name="file" multiple onChange={handleFileChange} />
-				<label htmlFor="file"><HiOutlineUpload className="select-btn"/></label>
+				<input className="inputfile" id="file" type="file" name="file" multiple onChange={addFiles} />
+				<label htmlFor="file" className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer bg-green-500">
+					<FiPlus className="select-btn cursor-pointer text-2xl"/>
+				</label>
+				{ files.length > 0
+					? <div className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer bg-red-500" onClick={remFiles}>
+						<FiX className="select-btn cursor-pointer text-2xl"/>
+					</div>
+					: null
+				}
 				<button className={`btn upload-btn ${state === 'complete' ? 'upload-btn-complete' : ''}`} disabled={!(state === 'loaded')}>
 					<div className="upload-btn-progress" style={{width: `${progress}%`}}></div>
 					<span className='upload-btn-text'>{btnTexts[state]}{state === 'loaded' ? <RiUploadCloud2Line /> : null}</span>
