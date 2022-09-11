@@ -17,12 +17,15 @@ const Directory = () => {
     const { pathname } = useLocation();
 
     useEffect( () => {
+        console.log('requesting read folder', pathname);
+        
         axios.get('/folder/read', { params: { path: pathname } } )
             .then( res => {
                 if ( res.status !== 200 ) 
                     console.log('err', res)
 
                 const { folders, files } = res.data;
+                console.log(folders, files);
                 setFolders(folders)
                 setFiles(files)
             } )
@@ -43,7 +46,7 @@ const Directory = () => {
             <div className='w-full' />
             { files.length > 0 
                 ? files.map( ( name, i ) => 
-                    <RFile key={`file-${i}`} path={name}></RFile>
+                    <RFile key={`file-${i}`} path={pathname} name={name}></RFile>
                 ) : <p>This folder contains no files</p>
             }
         </div>

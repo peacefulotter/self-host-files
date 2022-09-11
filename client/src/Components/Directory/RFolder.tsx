@@ -1,7 +1,8 @@
 
-import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { FcFolder } from 'react-icons/fc'
 import { Link } from 'react-router-dom';
+
 import { FolderRequests } from '../../requests/FolderReq';
 import fire from '../../swal/swal';
 
@@ -23,11 +24,15 @@ const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
     const [editing, setEditing] = useState<boolean>(false);
     const [editName, setEditName] = useState<string>(name);
 
+    useEffect( () => {
+        setEditName(name)
+    }, [name] )
+
     const onFocus = () => setEditing(true)
     const onBlur = () => {
         setEditing(false)
         if ( editName === name ) return;
-        console.log(path, name, editName);
+        else if ( editName.length === 0 ) return setEditName(name)
         new FolderRequests().rename(
             path, name, editName, 
             () => renameFolder(editName),
@@ -46,18 +51,20 @@ const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
     }
 
     const padding = 1.3
-    const width = editName.length > 0 ? (editName.length + padding) : name.length
+    const width = (editName.length > 0 ? editName.length : name.length) + padding
 
+    const to = path + (path.length > 1 ? '/' : '') + name
+    
     return (
         <Link 
-            to={path + '/' + name} 
+            to={to} 
             className="repo-elt repo-elt-folder"
             style={{pointerEvents: editing ? 'none' : 'auto'}}
         >
             <FcFolder className='repo-icon'/>
             <input 
                 type='text'
-                className="bg-transparent p-1 rounded-sm focus:ring-gray-500 border-transparent" 
+                className="bg-transparent p-1 font-mono rounded-sm focus:ring-gray-500 border-transparent" 
                 style={{width: width + "ch"}}
                 placeholder={name} 
                 onFocus={onFocus}
