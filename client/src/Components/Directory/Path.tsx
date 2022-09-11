@@ -12,7 +12,7 @@ const Breadcrumb = ({ children }: any) => {
 };
 
 const BreadcrumbSeparator = () => (
-    <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 text-gray-400 group-first:hidden mr-4" data-testid="flowbite-breadcrumb-separator" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6 text-gray-400 group-first:hidden mr-4" data-testid="flowbite-breadcrumb-separator" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
 )
   
 const BreadcrumbItem = ( { children, icon, href, hasPrev }: any) => {

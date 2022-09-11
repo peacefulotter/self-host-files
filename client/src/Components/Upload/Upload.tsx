@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { FiPlus, FiUploadCloud, FiX } from "react-icons/fi";
+import UploadingToast from "../../swal/UploadingToast";
 
 import FileList from "./FileList";
-import useToast from "./Toast";
 
 import './index.css'
 
@@ -13,7 +13,6 @@ const Upload = () => {
     const [files, setFiles] = useState<File[]>([]);
 	const [state, setState] = useState<States>('disabled')
 	const [progress, setProgress] = useState<number>(0)
-	const { trigger, complete } = useToast()
 
 	const handleUpload = (e: any) => {
 		if ( files === undefined ) return;
@@ -21,17 +20,17 @@ const Upload = () => {
 
 		setState('uploading')
 		setFiles([])
-		trigger();
+		UploadingToast.uploading();
 
 		const data = new FormData();
-		files.forEach( file => data.append('file[]', file) )
+		files.forEach( file => data.append('files', file) )
 
-		axios.post('/upload', data, {
+		axios.post('/file/upload', data, {
 			onUploadProgress: (e: ProgressEvent) => setProgress( (e.loaded / e.total) * 100 )
 		} )
 		.then( (res: any) => {
 			console.log(res);
-			complete().then( () => {
+			UploadingToast.complete().then( () => {
 				setState('complete');
 				setProgress(0)
 			} )

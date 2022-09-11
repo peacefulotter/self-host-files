@@ -1,16 +1,24 @@
 
 
-import Swal from 'sweetalert2'
+import Swal, { SweetAlertIcon } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-const fire = ( loading: boolean, title: string, timer?: number ) => () => 
+interface SwalConfig {
+    title: string;
+    icon: SweetAlertIcon;
+    target?: string;
+    loading?: boolean;
+    timer?: number;
+}
+
+const fire = ( { title, icon, target, loading, timer }: SwalConfig ) => 
     MySwal.fire( {
         title: <p>{title}</p>,
         toast: true,
-        target: '#progress',
-        icon: 'success',
+        target,
+        icon,
         timer,
         showConfirmButton: false,
         showClass: {
@@ -24,10 +32,4 @@ const fire = ( loading: boolean, title: string, timer?: number ) => () =>
         willOpen: () => loading && MySwal.showLoading()
     } )
 
-const useToast = () => {
-    const trigger = fire( true, 'Uploading...' )
-    const complete = fire( false, 'Complete', 2000 ) 
-    return { trigger, complete };
-}
-
-export default useToast;
+export default fire;

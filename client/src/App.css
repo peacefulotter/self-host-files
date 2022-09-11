@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* input[type='text']:focus { box-shadow: none; } */
+
 :root {
   --primary: #496DDB;
   --secondary: #717EC3;
