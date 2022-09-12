@@ -13,7 +13,7 @@ interface SwalConfig {
     timer?: number;
 }
 
-const fire = ( { title, icon, target, loading, timer }: SwalConfig ) => 
+export const fire = ( { title, icon, target, loading, timer }: SwalConfig ) => 
     MySwal.fire( {
         title: <p>{title}</p>,
         toast: true,
@@ -32,4 +32,18 @@ const fire = ( { title, icon, target, loading, timer }: SwalConfig ) =>
         willOpen: () => loading && MySwal.showLoading()
     } )
 
-export default fire;
+
+const alert = (icon: SweetAlertIcon) => (title: string) => 
+    MySwal.fire( {
+        title: <p>{title}</p>,
+        toast: true,
+        position: 'bottom-right',
+        icon,
+        timer: 2000,
+        showConfirmButton: false,
+    } )
+
+export const alertError = alert('error')
+export const alertWarning = alert('warning')
+export const alertSuccess = alert('success')
+

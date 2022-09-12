@@ -13,7 +13,7 @@ const Files: FC<IFiles> = ( { files, path } ) => {
         { files.length > 0 
             ? files.map( ( name, i ) => 
                 <RFile key={`file-${i}`} path={path} name={name} />
-            ) : <p className="m-32 text-xl">This folder contains no files</p>
+            ) : <p className="m-auto mt-32 text-xl text-gray-500">this folder contains no files</p>
         }
         </>
     )

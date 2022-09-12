@@ -21,7 +21,7 @@ const Folders: FC<IFolders> = ( { folders, setFolders, path } ) => {
     return (
         <>
         { folders.map( ( name, i) => 
-            <RFolder key={`folder-${i}`} path={path} name={name} renameFolder={renameFolder(i)} />
+            <RFolder key={`folder-${i}`} folders={folders} path={path} name={name} renameFolder={renameFolder(i)} />
         ) }
         <AddFolderBtn folders={folders} addFolder={addFolder} path={path} />
         </>

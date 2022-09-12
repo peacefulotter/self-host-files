@@ -22,7 +22,7 @@ const BreadcrumbItem = ( { children, icon, href, hasPrev }: any) => {
             { hasPrev ? <BreadcrumbSeparator /> : null }
             <Link to={href} className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white ml-0">
                 { icon ? <Icon className="mr-2" />  : null }
-                { children }
+                { decodeURI( children ) }
             </Link>
         </li>
     );

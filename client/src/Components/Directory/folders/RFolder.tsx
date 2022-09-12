@@ -3,10 +3,11 @@ import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { FcFolder } from 'react-icons/fc'
 import { Link } from 'react-router-dom';
 
-import fire from '../../../swal/swal';
+import { alertError, alertWarning } from '../../../swal/swal';
 import FolderRequests from '../../../requests/FolderReq';
 
 interface IFolder {
+    folders: string[];
     path: string;
     name: string;
     renameFolder: (newName: string) => void;
@@ -19,7 +20,7 @@ const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
     return true;
 }
 
-const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
+const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder } ) => {
 
     const [editing, setEditing] = useState<boolean>(false);
     const [editName, setEditName] = useState<string>(name);
@@ -33,10 +34,18 @@ const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
         setEditing(false)
         if ( editName === name ) return;
         else if ( editName.length === 0 ) return setEditName(name)
+        else if ( folders.includes(editName) )
+        {
+            alertWarning( 'Folder name already used' )
+            return setEditName(name)
+        }
         FolderRequests.rename(
             path, name, editName, 
             () => renameFolder(editName),
-            () => fire( { title: 'Renaming folder failed', icon: 'error' } )
+            () => {
+                setEditName(name)
+                alertError( 'Renaming folder failed' )
+            }
         ) 
     }
 

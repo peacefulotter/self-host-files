@@ -1,4 +1,4 @@
-import fire from "./swal";
+import { fire } from "./swal";
 
 const UploadingToast = {
     uploading: () => fire( { 
