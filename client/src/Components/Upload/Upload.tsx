@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { FiPlus, FiUploadCloud, FiX } from "react-icons/fi";
+import FileRequests from "../../requests/FileReq";
 import UploadingToast from "../../swal/UploadingToast";
 
 import FileList from "./FileList";
@@ -24,17 +24,14 @@ const Upload = () => {
 
 		const data = new FormData();
 		files.forEach( file => data.append('files', file) )
-
-		axios.post('/file/upload', data, {
-			onUploadProgress: (e: ProgressEvent) => setProgress( (e.loaded / e.total) * 100 )
-		} )
-		.then( (res: any) => {
-			console.log(res);
-			UploadingToast.complete().then( () => {
+		
+		FileRequests.upload( data, 
+			( { loaded, total } ) => setProgress( (loaded / total) * 100 ), 
+			() => { 
 				setState('complete');
 				setProgress(0)
-			} )
-		});
+			}
+		)
 	}
 
 	const addFiles = (e: any) => {

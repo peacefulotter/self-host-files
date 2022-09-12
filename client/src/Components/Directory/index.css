@@ -1,12 +1,3 @@
-
-
-.dir-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 50px;
-}
-
 .directories {
   display: flex;
   flex-wrap: wrap;

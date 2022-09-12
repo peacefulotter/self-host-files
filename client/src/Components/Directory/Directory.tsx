@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import RFolder from './RFolder';
-import RFile from './RFile';
-import AddFolderBtn from './AddFolderBtn';
+import Folders from './folders/Folders';
+import Files from './files/Files';
 
 import './index.css'
+import FolderRequests from '../../requests/FolderReq';
 
 const Directory = () => {
 
@@ -17,38 +17,18 @@ const Directory = () => {
     const { pathname } = useLocation();
 
     useEffect( () => {
-        console.log('requesting read folder', pathname);
-        
-        axios.get('/folder/read', { params: { path: pathname } } )
-            .then( res => {
-                if ( res.status !== 200 ) 
-                    console.log('err', res)
-
-                const { folders, files } = res.data;
-                console.log(folders, files);
-                setFolders(folders)
-                setFiles(files)
-            } )
+        FolderRequests.read( pathname, ( { folders, files } ) => {
+            setFolders(folders)
+            setFiles(files)
+        } )        
     }, [pathname] )
 
-    const renameFolder = (i: number) => (newName: string) => {
-        const temp = [...folders];
-        temp[i] = newName;
-        setFolders( temp )
-    }
-
+    
     return (
         <div className="directories">
-            { folders.map( ( name, i) => 
-                <RFolder key={`folder-${i}`} path={pathname} name={name} renameFolder={renameFolder(i)} />
-            ) }
-            <AddFolderBtn path={pathname} />
+            <Folders folders={folders} setFolders={setFolders} path={pathname} />
             <div className='w-full' />
-            { files.length > 0 
-                ? files.map( ( name, i ) => 
-                    <RFile key={`file-${i}`} path={pathname} name={name}></RFile>
-                ) : <p>This folder contains no files</p>
-            }
+            <Files files={files} path={pathname} />
         </div>
     )
 }

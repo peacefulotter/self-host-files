@@ -5,7 +5,7 @@ import { Children } from 'react';
 
 const Breadcrumb = ({ children }: any) => {
     return (
-        <nav className="mx-8 md:mx-16 lg:mx-32 mt-8">
+        <nav>
             <ol className="flex items-center space-x-4">{Children.toArray(children)}</ol>
         </nav>
     );
@@ -28,19 +28,18 @@ const BreadcrumbItem = ( { children, icon, href, hasPrev }: any) => {
     );
 };
 
-const Path = () => {
+const PathBreadcrumb = () => {
     const { pathname } = useLocation()
     const unveil = pathname.split('/').splice(1)
     const navigations = unveil.reduce( 
         (prev: string[], cur: string) =>
-            [...prev, (prev.length > 0 ? prev[prev.length - 1] : '')  + '/' + cur]
+            [...prev, (prev.length > 0 ? prev[prev.length - 1] : '')  + '/' + cur + '/']
         , 
         [] as string[]
     )
-    console.log(pathname, unveil, navigations);
-    
+
     return (
-        <Breadcrumb className="path-breadcrumb" aria-label="Default breadcrumb example">
+        <Breadcrumb aria-label="Default breadcrumb example">
             <BreadcrumbItem href="/" icon={FiHome}>Home</BreadcrumbItem>
             { unveil.map( (path, i) => 
                 <BreadcrumbItem key={`bc-${i}`} hasPrev={true} href={navigations[i]}>
@@ -51,4 +50,4 @@ const Path = () => {
     )
 }
 
-export default Path;
+export default PathBreadcrumb;

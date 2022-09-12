@@ -16,9 +16,11 @@ export class FolderService
     {    
         const folders = []
         const files = []
-        const currentPath = this.getPath(path)
-        console.log(currentPath);
+
+        const decodedPath = decodeURI(path)
+        const currentPath = this.getPath( decodedPath )
         const directory = await promises.readdir( currentPath )
+
         for ( const filename of directory )
         {
             const filePath = currentPath + '/' + filename;
@@ -27,6 +29,7 @@ export class FolderService
             if ( isDirectory ) folders.push( filename )
             else files.push( filename )
         }
+        
         return { folders, files };
     }
 

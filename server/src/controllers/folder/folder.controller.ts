@@ -19,7 +19,8 @@ export class FolderController
             return await this.service.read( path )
         }
         catch {
-            throw new HttpException('read failed', HttpStatus.NOT_FOUND )
+            const msg = `Reading folder ${decodeURI(path)} failed`
+            throw new HttpException(msg, HttpStatus.NOT_FOUND )
         }
     }
 

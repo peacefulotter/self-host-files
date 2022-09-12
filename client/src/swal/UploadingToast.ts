@@ -13,7 +13,14 @@ const UploadingToast = {
         icon: 'success',
         timer: 2000,
         target: '#progress'
-    } ) 
+    } ) ,
+    error: () => fire( {
+        loading: false, 
+        title: 'Error', 
+        icon: 'error',
+        timer: 2000,
+        target: '#progress'
+    } )
 }
 
 export default UploadingToast;

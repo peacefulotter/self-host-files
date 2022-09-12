@@ -3,8 +3,8 @@ import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { FcFolder } from 'react-icons/fc'
 import { Link } from 'react-router-dom';
 
-import { FolderRequests } from '../../requests/FolderReq';
-import fire from '../../swal/swal';
+import fire from '../../../swal/swal';
+import FolderRequests from '../../../requests/FolderReq';
 
 interface IFolder {
     path: string;
@@ -33,7 +33,7 @@ const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
         setEditing(false)
         if ( editName === name ) return;
         else if ( editName.length === 0 ) return setEditName(name)
-        new FolderRequests().rename(
+        FolderRequests.rename(
             path, name, editName, 
             () => renameFolder(editName),
             () => fire( { title: 'Renaming folder failed', icon: 'error' } )
@@ -53,18 +53,16 @@ const RFolder: FC<IFolder> = ( { path, name, renameFolder } ) => {
     const padding = 1.3
     const width = (editName.length > 0 ? editName.length : name.length) + padding
 
-    const to = path + (path.length > 1 ? '/' : '') + name
-    
     return (
         <Link 
-            to={to} 
+            to={path + name + '/'} 
             className="repo-elt repo-elt-folder"
             style={{pointerEvents: editing ? 'none' : 'auto'}}
         >
             <FcFolder className='repo-icon'/>
             <input 
                 type='text'
-                className="bg-transparent p-1 font-mono rounded-sm focus:ring-gray-500 border-transparent" 
+                className="bg-transparent p-1 font-mono text-sm rounded-sm focus:ring-gray-500 border-transparent" 
                 style={{width: width + "ch"}}
                 placeholder={name} 
                 onFocus={onFocus}

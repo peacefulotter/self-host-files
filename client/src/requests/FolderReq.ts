@@ -1,17 +1,23 @@
-import axios from "axios"
 import Requests from "./Requests"
 
-export class FolderRequests extends Requests 
-{
-    constructor()
-    {
-        super('/folder/')
-    }
+const prefix = '/folder/'
 
-    rename( 
+const FolderRequests = 
+{
+    read: (path: string, cb: (data: { folders: string[], files: string[] }) => void) => {
+        Requests.get( prefix, 'read', { path }, cb )
+    },
+
+    create: (path: string, name: string, cb: () => void ) => {
+        Requests.get(prefix, 'create', { path, name }, cb)
+    },
+
+    rename: ( 
         path: string, oldName: string, newName: string, 
         cb?: () => void, err?: () => void
-    ) {
-        this.get<string>('rename', { path, oldName, newName }, cb, err )
+    ) => {
+        Requests.get<string>(prefix, 'rename', { path, oldName, newName }, cb, err )
     }
 }
+
+export default FolderRequests;
