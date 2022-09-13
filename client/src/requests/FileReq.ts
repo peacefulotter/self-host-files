@@ -5,12 +5,12 @@ const prefix = '/file/';
 
 const FileRequests = 
 {
-    upload: ( data: FormData, onUploadProgress: (e: ProgressEvent) => void, cb: () => void ) =>
+    upload: ( data: FormData, onUploadProgress: (e: ProgressEvent) => void, cb?: () => void, err?: () => void ) =>
     {
-        Requests.post<any>( 
+        Requests.post( 
             prefix, 'upload', data, { onUploadProgress }, 
             () => UploadingToast.complete().then( cb ),
-            () => UploadingToast.error().then( cb ) 
+            () => UploadingToast.error().then( err ) 
         )
     },
 

@@ -4,7 +4,7 @@ import { FcAudioFile, FcDocument, FcFile, FcImageFile, FcVideoFile } from "react
 
 const EXTENSIONS_ICON = new Proxy<{ [key: string]: IconType }>( {
     'png|jpg|jpeg': FcImageFile,
-    'txt|pdf': FcDocument,
+    'md|txt|pdf': FcDocument,
     'mp3': FcAudioFile,
     'mp4': FcVideoFile,
 }, {

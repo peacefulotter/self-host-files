@@ -9,9 +9,6 @@ interface IFileList {
 }
 
 const FileElt = ( { index, file, remFile }: { index: number, file: File, remFile: (i: number) => void } ) => {
-    
-    console.log(file.name);
-    
     return (
         <div className="file-row">
             <FileIcon extension={file.name} size={2} />

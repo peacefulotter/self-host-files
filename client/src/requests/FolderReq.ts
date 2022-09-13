@@ -1,15 +1,17 @@
 import Requests from "./Requests"
 
+import { DirectoryContent } from "../types"
+
 const prefix = '/folder/'
 
 const FolderRequests = 
 {
-    read: (path: string, cb: (data: { folders: string[], files: string[] }) => void) => {
+    read: (path: string, cb: (data: DirectoryContent) => void) => {
         Requests.get( prefix, 'read', { path }, cb )
     },
 
     create: (path: string, name: string, cb: () => void ) => {
-        Requests.get(prefix, 'create', { path, name }, cb)
+        Requests.get( prefix, 'create', { path, name }, cb )
     },
 
     rename: ( 

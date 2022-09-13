@@ -2,27 +2,28 @@ import axios, { AxiosResponse, AxiosRequestConfig, ResponseType } from "axios";
 
 const buildURL = (prefix: string, path: string) => prefix + path
 
-const responseHandler = <T>( url: string, cb?: (res: T) => void, err?: (res: T) => void ) => ( { status, data }: AxiosResponse<T> ) => {
+const responseHandler = <T>( url: string, cb?: (res: T) => void ) => ( { status, data }: AxiosResponse<T>) => {
     console.log(status, url);
-    if ( status !== 200 && err ) err(data)
-    else if ( cb ) cb(data) 
+    if ( cb ) cb(data) 
 }
 
 const Requests = {
     get: <T>( prefix: string, path: string, params: any, cb?: (res: T) => void, err?: (res: T) => void, responseType?: ResponseType ) =>
     {
-        const url = buildURL( prefix, path);
+        const url = buildURL( prefix, path );
         return axios
             .get<T>( url, { params, responseType } )
-            .then( responseHandler(url, cb, err) )
+            .then( responseHandler(url, cb) )
+            .catch( responseHandler(url, err) )
     },
 
-    post: <T>( prefix: string, path: string, data: any, config: AxiosRequestConfig<any>, cb?: (res: T) => void, err?: (res: T) => void ) =>
+    post: <T>( prefix: string, path: string, data: FormData, config: AxiosRequestConfig<any>, cb?: (res: T) => void, err?: (res: T) => void ) =>
     {
         const url = buildURL( prefix, path);
         axios
-            .post<T>( prefix + path, data, config )
-            .then( responseHandler(url, cb, err) )
+            .post<T>( prefix + path, data, { ...config, headers: { "Content-Type": "multipart/form-data" } } )
+            .then( responseHandler(url, cb) )
+            .catch( responseHandler(url, err) )
     },
 
     downloadBlob: (blob: any, name: string) => {

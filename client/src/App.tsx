@@ -1,6 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import Menu from './Components/Menu/Menu';
 import Upload from './Components/Upload/Upload';
 import Directory from './Components/Directory/Directory';
 
@@ -12,12 +11,7 @@ const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				<Upload />
-				<div className="directories-wrapper">
-					<Menu />
-					<Routes>
-						<Route path="*" element={<Directory />} />
-					</Routes>
-				</div>
+				<Directory />
 			</div>
 		</BrowserRouter>
 	);

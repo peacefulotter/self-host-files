@@ -1,35 +1,38 @@
-import { useState } from "react";
-import { FiPlus, FiUploadCloud, FiX } from "react-icons/fi";
-import FileRequests from "../../requests/FileReq";
-import UploadingToast from "../../swal/UploadingToast";
+import { ChangeEvent, useCallback, useState } from "react";
 
 import FileList from "./FileList";
+import Header from "./Header";
+
+import FileRequests from "../../requests/FileReq";
+import UploadingToast from "../../swal/UploadingToast";
+import { UploadState } from "../../types";
 
 import './index.css'
 
-type States = 'disabled' | 'loaded' | 'uploading' | 'complete' 
-
 const Upload = () => {
     const [files, setFiles] = useState<File[]>([]);
-	const [state, setState] = useState<States>('disabled')
+	const [state, setState] = useState<UploadState>('disabled')
 	const [progress, setProgress] = useState<number>(0)
 
-	const handleUpload = (e: any) => {
-		if ( files === undefined ) return;
+	const uploadFiles = (e: any) => {
 		e.preventDefault();
 
 		setState('uploading')
-		setFiles([])
 		UploadingToast.uploading();
 
 		const data = new FormData();
-		files.forEach( file => data.append('files', file) )
-		
+		files.forEach( file => data.append('files[]', file) )
+
 		FileRequests.upload( data, 
 			( { loaded, total } ) => setProgress( (loaded / total) * 100 ), 
 			() => { 
+				setFiles([]);
 				setState('complete');
-				setProgress(0)
+				setProgress(0);
+			},
+			() => {
+				setState('loaded');
+				setProgress(0);
 			}
 		)
 	}
@@ -55,19 +58,8 @@ const Upload = () => {
 
     return (
 		<>
-		<form className="upload-form" onSubmit={handleUpload}>
-			<div className="form-header">
-				<input className="inputfile" id="file" type="file" name="file" multiple onChange={addFiles} />
-				<label htmlFor="file" className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-500 hover:text-green-600">
-					<FiPlus className="select-btn cursor-pointer text-3xl"/>
-				</label>
-				<button className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer text-red-500 hover:text-red-600 disabled:text-gray-400" disabled={!(state === 'loaded')} onClick={remFiles}>
-					<FiX className="select-btn cursor-pointer text-3xl"/>
-				</button>
-				<button className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer text-blue-500 hover:text-blue-600 disabled:text-gray-400" disabled={!(state === 'loaded')}>
-					<FiUploadCloud className="select-btn cursor-pointer text-3xl"/>
-				</button>
-			</div>
+		<form className="upload-form">
+			<Header state={state} addFiles={addFiles} remFiles={remFiles} uploadFiles={uploadFiles} />
 			<FileList files={files} remFile={remFile}/>
 		</form>
 

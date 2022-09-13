@@ -1,34 +1,36 @@
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
-import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import Explorer from "./Explorer";
+import Menu from "./Menu/Menu";
 
-import Folders from './folders/Folders';
-import Files from './files/Files';
+import useSelectMode from "../../Hooks/useSelectMode";
+import { DirectoryContent } from "../../types";
 
 import './index.css'
-import FolderRequests from '../../requests/FolderReq';
 
 const Directory = () => {
 
-    const [ folders, setFolders ] = useState<string[]>([]);
-    const [ files, setFiles ] = useState<string[]>([]);
-    const { pathname } = useLocation();
+    const [directory, setDirectory] = useState<DirectoryContent>({
+        folders: [],
+        files: []
+    });
 
-    useEffect( () => {
-        FolderRequests.read( pathname, ( { folders, files } ) => {
-            setFolders(folders)
-            setFiles(files)
-        } )        
-    }, [pathname] )
+    const { selecting, selectedFiles, downloadSelected, toggleSelecting, toggleSelectFile } = useSelectMode(directory)
 
-    
     return (
-        <div className="directories">
-            <Folders folders={folders} setFolders={setFolders} path={pathname} />
-            <div className='w-full' />
-            <Files files={files} path={pathname} />
+        <div className="directories-wrapper">
+            <Menu downloadSelected={downloadSelected} toggleSelecting={toggleSelecting} />
+            <Routes>
+                <Route path="*" element={
+                    <Explorer 
+                        directory={directory}
+                        setDirectory={setDirectory}
+                        selecting={selecting}
+                        selectedFiles={selectedFiles}
+                        toggleSelectFile={toggleSelectFile} />
+                } />
+            </Routes>
         </div>
     )
 }

@@ -11,6 +11,8 @@ interface IFolder {
     path: string;
     name: string;
     renameFolder: (newName: string) => void;
+    selecting: boolean;
+    toggleSelectFile: () => void;
 }
 
 const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
@@ -20,7 +22,7 @@ const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
     return true;
 }
 
-const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder } ) => {
+const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, toggleSelectFile } ) => {
 
     const [editing, setEditing] = useState<boolean>(false);
     const [editName, setEditName] = useState<string>(name);
@@ -64,9 +66,10 @@ const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder } ) => {
 
     return (
         <Link 
-            to={path + name + '/'} 
-            className="repo-elt repo-elt-folder"
+            to={selecting ? '' : path + name + '/'} 
+            className="repo-elt repo-elt-folder animate-fade-in"
             style={{pointerEvents: editing ? 'none' : 'auto'}}
+            onClick={() => selecting && toggleSelectFile()}
         >
             <FcFolder className='repo-icon'/>
             <input 

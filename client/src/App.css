@@ -11,6 +11,18 @@
   --tertiary: #AE8799;
   --fourth: #542344;
   --highlight: #df57c2;
+
+  --a: #244e76;
+  --b: #8cd1e1;
+  --c: #d2e4eb;
+  --d: #3d5328;
+  --e: #072b0e;
+
+  --tw-1: #2563eb; /* blue-600 */
+  --tw-2: #7dd3fc; /* sky-300 */
+  --tw-3: #e0f2fe; /* sky-100 */
+  --tw-4: #3F6212; /* lime-800 */
+  --tw-5: #14532D; /* green-900 */
 }
 
 body, html {

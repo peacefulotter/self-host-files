@@ -1,10 +1,12 @@
 
-import { Controller, Get, HttpException, Query, Res, UseFilters } from '@nestjs/common';
-import { UploadedFile } from 'express-fileupload';
+import { Controller, Post, HttpException, UploadedFiles, UseFilters, Body, UseInterceptors } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+
 import { FileService } from './file.service';
 
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
-import { Response } from 'express';
+import { FOLDER_PATH } from '../../constants';
 
 @Controller('file')
 @UseFilters(new HttpExceptionFilter())
@@ -12,18 +14,15 @@ export class FileController
 {
     constructor(private readonly service: FileService) {}
 
-    @Get('upload')
-    async upload( @Query() query: { files: { 'file[]': UploadedFile | UploadedFile[] } } )
+    @Post('upload')
+    @UseInterceptors(FilesInterceptor('files[]', undefined, {
+        storage: diskStorage( {
+            destination: FOLDER_PATH,
+        } ) 
+    } ) )
+    async upload( @UploadedFiles() files: Array<Express.Multer.File> )
     {
-        const files: UploadedFile | UploadedFile[] = query.files['file[]'];
-        try {
-            return await this.service.upload(files);
-        }
-        catch { 
-            throw new HttpException( {
-                msg: ['[template]', 'File 1 failed', 'File 3 failed']
-            }, 403 )
-        }
+        return { status: 200, msg: 'ok' }
     }
 
     // @Get('download')
