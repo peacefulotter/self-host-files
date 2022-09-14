@@ -19,7 +19,7 @@ const Requests = {
 
     post: <T>( prefix: string, path: string, data: FormData, config: AxiosRequestConfig<any>, cb?: (res: T) => void, err?: (res: T) => void ) =>
     {
-        const url = buildURL( prefix, path);
+        const url = buildURL( prefix, path );
         axios
             .post<T>( prefix + path, data, { ...config, headers: { "Content-Type": "multipart/form-data" } } )
             .then( responseHandler(url, cb) )

@@ -6,6 +6,7 @@ import { diskStorage } from 'multer';
 import { FileService } from './file.service';
 
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
+import { FOLDER_PATH } from '../../constants';
 
 @Controller('file')
 @UseFilters(new HttpExceptionFilter())
@@ -16,7 +17,13 @@ export class FileController
     @Post('upload')
     @UseInterceptors(FilesInterceptor('files[]', undefined, {
         storage: diskStorage( {
-            filename: (req, file, callback) => callback(null, file.originalname),
+            destination: (req, _, callback) => {
+                const destination = FOLDER_PATH + req.body.pathname
+                callback(null, destination)
+            },
+            filename: (_, file, callback) => {
+                callback(null, file.originalname)
+            },
         } ) 
     } ) )
     async upload( @UploadedFiles() files: Array<Express.Multer.File> )

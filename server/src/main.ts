@@ -5,7 +5,6 @@ import express from "express";
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 import { FOLDER_PATH } from './constants';
-import { MulterModule } from '@nestjs/platform-express';
 
 declare const module: any;
 
@@ -17,7 +16,6 @@ async function bootstrap()
 	app.useGlobalFilters( new HttpExceptionFilter() );
 
 	app.use( express.static( FOLDER_PATH ) );
-	MulterModule.register( { dest: FOLDER_PATH } );
 
 	await app.listen(3001);
 

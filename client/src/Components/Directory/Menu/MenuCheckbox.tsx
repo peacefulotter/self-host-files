@@ -14,7 +14,7 @@ const MenuCheckbox: FC<IMenuCheckbox> = ( { icon, name, onClick } ) => {
     return (
         <Checkbox 
             className="btn-purple" 
-            checkedClass="btn-purple-active"
+            checkedClass="btn-active-purple"
             onClick={onClick}
         >
             { (isChecked: boolean) => 

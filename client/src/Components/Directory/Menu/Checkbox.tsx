@@ -20,7 +20,7 @@ const Checkbox: React.FC<ICheckbox> = ( { forceState, className, checkedClass, s
 
   	return (
         <div 
-            className={`${className} ${isChecked && checkedClass}`}
+            className={`${className} ${isChecked ? checkedClass : ''}`}
             style={style}
             onClick={(e) => { 	
 				const update = !isChecked;								
