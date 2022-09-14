@@ -4,6 +4,7 @@ import FilesRequests from "../requests/FilesReq";
 
 import { DirectoryContent } from "../types";
 
+const fillFalseArray = (length: number) => Array.from( { length }, () => false )
 
 const useSelectMode = ( directory: DirectoryContent ) => {
 
@@ -15,17 +16,16 @@ const useSelectMode = ( directory: DirectoryContent ) => {
     useEffect( () => {
         const newLength = directory.files.length
         if ( newLength === selectedFiles.length ) return;
-        setSelectedFiles( Array.from( {length: newLength}, () => false ) )
+        setSelectedFiles( fillFalseArray(newLength) )
     }, [directory] )
 
     const downloadSelected = () => {
         const tos = selectedFiles
             .filter( v => v )
             .map( (v, i) => pathname + directory.files[i] )
-        
-        console.log(tos);
-        
-        FilesRequests.download(tos)
+        FilesRequests.download(tos, () => 
+            setSelectedFiles(fillFalseArray(directory.files.length)) 
+        )
     }
 
     const toggleSelecting = () => setSelecting( prev => !prev )

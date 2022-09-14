@@ -1,5 +1,4 @@
 
-import axios from 'axios';
 import { FC } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import FolderRequests from '../../../requests/FolderReq';
@@ -24,7 +23,10 @@ const AddFolderBtn: FC<Props> = ( { folders, addFolder, path } ) => {
 
     const createFolder = () => {
         const name = resolveName();
-        FolderRequests.create( path, name, () => addFolder(name) )
+        FolderRequests.create( path, name, () => {
+            console.log('here');
+            addFolder(name)
+         } )
     }
 
     return (

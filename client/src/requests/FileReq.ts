@@ -18,10 +18,7 @@ const FileRequests =
     {
         fetch(to)
             .then( res => res.blob() )
-            .then( blob => {
-                console.log(blob);
-                Requests.downloadBlob(blob, name)
-            } )
+            .then( blob => Requests.downloadBlob(blob, name) )
     }
 }  
 

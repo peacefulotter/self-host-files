@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Explorer from "./Explorer";
@@ -9,7 +9,12 @@ import { DirectoryContent } from "../../types";
 
 import './index.css'
 
-const Directory = () => {
+interface IDirectory {
+    uploadedFiles: string[];
+    clearUploadedFiles: () => void;
+}
+
+const Directory: FC<IDirectory> = ( { uploadedFiles, clearUploadedFiles } ) => {
 
     const [directory, setDirectory] = useState<DirectoryContent>({
         folders: [],
@@ -17,6 +22,14 @@ const Directory = () => {
     });
 
     const { selecting, selectedFiles, downloadSelected, toggleSelecting, toggleSelectFile } = useSelectMode(directory)
+
+    useEffect( () => {
+        if ( uploadedFiles.length === 0 ) return;
+        const temp = { ...directory }
+        temp['files'] = [...directory['files'], ...uploadedFiles ].sort()
+        setDirectory(temp);
+        clearUploadedFiles()
+    }, [uploadedFiles] )
 
     return (
         <div className="directories-wrapper">

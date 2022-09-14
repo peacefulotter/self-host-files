@@ -13,8 +13,8 @@ const MenuCheckbox: FC<IMenuCheckbox> = ( { icon, name, onClick } ) => {
     const Icon = icon;
     return (
         <Checkbox 
-            className="flex items-center gap-2 rounded cursor-pointer rounded bg-palette-b-100 hover:bg-palette-b-200 p-2 px-4 transition-colors" 
-            checkedClass="bg-palette-a-600 hover:bg-palette-a-700"
+            className="btn-purple" 
+            checkedClass="btn-purple-active"
             onClick={onClick}
         >
             { (isChecked: boolean) => 

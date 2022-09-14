@@ -5,28 +5,30 @@ import RFolder from "./RFolder";
 
 interface IFolders {
     folders: string[];
-    setFolders: (newFolders: string[]) => void;
+    addFolder: (name: string) => void;
+    renameFolder: (i: number) => (newName: string) => void;
     path: string;
     selecting: boolean;
     toggleSelectFile: (i: number) => () => void;
 }
 
-const Folders: FC<IFolders> = ( { folders, setFolders, path, selecting, toggleSelectFile } ) => {
-
-    const renameFolder = (i: number) => (newName: string) => {
-        const temp = [...folders];
-        temp[i] = newName;
-        setFolders( temp )
-    }
-
-    const addFolder = (name: string) => setFolders( [...folders, name] )
-
+const Folders: FC<IFolders> = ( { folders, addFolder, renameFolder, path, selecting, toggleSelectFile } ) => {
     return (
         <>
         { folders.map( ( name, i) => 
-            <RFolder key={`folder-${i}`} folders={folders} path={path} name={name} renameFolder={renameFolder(i)} selecting={selecting} toggleSelectFile={toggleSelectFile(i)} />
+            <RFolder 
+                key={`folder-${i}`} 
+                folders={folders} 
+                path={path} 
+                name={name} 
+                renameFolder={renameFolder(i)} 
+                selecting={selecting} 
+                toggleSelectFile={toggleSelectFile(i)} />
         ) }
-        <AddFolderBtn folders={folders} addFolder={addFolder} path={path} />
+        <AddFolderBtn 
+            folders={folders} 
+            addFolder={addFolder} 
+            path={path} />
         </>
     )
 }

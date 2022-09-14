@@ -74,8 +74,8 @@ const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, t
             <FcFolder className='repo-icon'/>
             <input 
                 type='text'
-                className="bg-transparent p-1 font-mono text-sm rounded-sm focus:ring-gray-500 border-transparent" 
-                style={{width: width + "ch"}}
+                className="bg-transparent p-1 font-mono font-bold text-xs rounded-sm focus:ring-gray-500 border-transparent" 
+                style={{width: width + "ch", maxWidth: '105%'}}
                 placeholder={name} 
                 onFocus={onFocus}
                 onBlur={onBlur}

@@ -8,19 +8,22 @@ import { FC } from "react";
 interface IHeader {
     state: UploadState;
     addFiles: (e: any) => void;
-    remFiles: () => void;
+    remFiles: (e: any) => void;
     uploadFiles: (e: any) => void;
 }
 
 const Header: FC<IHeader> = ( { state, addFiles, remFiles, uploadFiles } ) => {
+
+    const disabled = !(state === 'loaded')
+
     return (
         <div className="form-header">
             <input className="inputfile" id="file" type="file" name="files[]" multiple onChange={addFiles} />
-            <label htmlFor="file" className="w-8 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-500 hover:text-green-600">
-                <FiPlus className="select-btn cursor-pointer text-3xl"/>
+            <label htmlFor="file" className="btn-upload-green">
+                <FiPlus className="select-btn text-3xl"/>
             </label>
-            <HeaderBtn icon={FiX} onClick={remFiles} color='red' disabled={!(state === 'loaded')}/>
-            <HeaderBtn icon={FiUploadCloud} onClick={uploadFiles} color='blue' disabled={!(state === 'loaded')}/>
+            <HeaderBtn icon={FiX} onClick={remFiles} className='btn-upload-red' disabled={disabled}/>
+            <HeaderBtn icon={FiUploadCloud} onClick={uploadFiles} className='btn-upload-blue' disabled={disabled}/>
         </div>
     )
 }

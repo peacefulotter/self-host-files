@@ -8,11 +8,11 @@ const responseHandler = <T>( url: string, cb?: (res: T) => void ) => ( { status,
 }
 
 const Requests = {
-    get: <T>( prefix: string, path: string, params: any, cb?: (res: T) => void, err?: (res: T) => void, responseType?: ResponseType ) =>
+    get: <T>( prefix: string, path: string, params: any, cb?: (res: T) => void, err?: (res: T) => void, config?: AxiosRequestConfig<T> ) =>
     {
         const url = buildURL( prefix, path );
         return axios
-            .get<T>( url, { params, responseType } )
+            .get<T>( url, { ...config, params } )
             .then( responseHandler(url, cb) )
             .catch( responseHandler(url, err) )
     },
@@ -29,6 +29,8 @@ const Requests = {
     downloadBlob: (blob: any, name: string) => {
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
+        const id =  'download-link'
+        link.setAttribute('id', id)
         link.setAttribute("download", name);
         document.body.appendChild(link);
         link.click();

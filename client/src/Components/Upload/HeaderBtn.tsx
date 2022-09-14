@@ -3,21 +3,21 @@ import { IconType } from "react-icons";
 
 interface IHeaderBtn {
     icon: IconType;
-    color: string;
+    className: string;
     disabled: boolean;
     onClick?: (e: any) => void;
 }
 
-const HeaderBtn: FC<IHeaderBtn> = ( { icon, color, disabled, onClick } ) => {
+const HeaderBtn: FC<IHeaderBtn> = ( { icon, className, disabled, onClick } ) => {
     const Icon = icon;
+
     return (
         <button 
-            className={`w-8 h-8 rounded-full flex justify-center items-center cursor-pointer text-${color}-500 hover:text-${color}-600 disabled:text-gray-400`}
+            className={className}
             disabled={disabled}
-            style={{pointerEvents: disabled ? 'none' : 'auto'}}
             onClick={onClick}
         >
-            <Icon className="select-btn cursor-pointer text-3xl"/>
+            <Icon className="select-btn text-3xl"/>
         </button>
     )
 }

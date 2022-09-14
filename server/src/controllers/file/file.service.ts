@@ -1,6 +1,4 @@
 
-import { SaveResponse } from "../../types";
-import { FOLDER_PATH } from "../../constants";
 
 export class FileService 
 {

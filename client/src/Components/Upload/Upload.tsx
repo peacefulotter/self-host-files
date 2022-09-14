@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import React, { FC, useState } from "react";
 
 import FileList from "./FileList";
 import Header from "./Header";
@@ -9,23 +9,29 @@ import { UploadState } from "../../types";
 
 import './index.css'
 
-const Upload = () => {
+interface IUpload {
+	newUploadedFiles: (files: string[]) => void;
+}
+
+const Upload: FC<IUpload> = ( { newUploadedFiles } ) => {
     const [files, setFiles] = useState<File[]>([]);
 	const [state, setState] = useState<UploadState>('disabled')
 	const [progress, setProgress] = useState<number>(0)
 
-	const uploadFiles = (e: any) => {
+	const uploadFiles = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
 		setState('uploading')
 		UploadingToast.uploading();
 
 		const data = new FormData();
-		files.forEach( file => data.append('files[]', file) )
+		files.forEach( file => data.append('files[]', file, file.name) )
 
+		// TODO: return the files that have succesfully been imported
 		FileRequests.upload( data, 
 			( { loaded, total } ) => setProgress( (loaded / total) * 100 ), 
 			() => { 
+				newUploadedFiles( files.map( f => f.name ) )
 				setFiles([]);
 				setState('complete');
 				setProgress(0);
@@ -51,7 +57,8 @@ const Upload = () => {
 			setState('disabled')
 	}
 
-	const remFiles = () => {
+	const remFiles = (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
 		setFiles([])
 		setState('disabled')
 	}

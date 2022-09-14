@@ -32,4 +32,5 @@ const Checkbox: React.FC<ICheckbox> = ( { forceState, className, checkedClass, s
         </div>
   	);
 };
+
 export default Checkbox;

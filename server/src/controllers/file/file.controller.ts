@@ -1,12 +1,11 @@
 
-import { Controller, Post, HttpException, UploadedFiles, UseFilters, Body, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFiles, UseFilters, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
 import { FileService } from './file.service';
 
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
-import { FOLDER_PATH } from '../../constants';
 
 @Controller('file')
 @UseFilters(new HttpExceptionFilter())
@@ -17,7 +16,7 @@ export class FileController
     @Post('upload')
     @UseInterceptors(FilesInterceptor('files[]', undefined, {
         storage: diskStorage( {
-            destination: FOLDER_PATH,
+            filename: (req, file, callback) => callback(null, file.originalname),
         } ) 
     } ) )
     async upload( @UploadedFiles() files: Array<Express.Multer.File> )
