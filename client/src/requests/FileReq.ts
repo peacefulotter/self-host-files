@@ -1,3 +1,4 @@
+import { alertError, alertSuccess } from "../swal/swal";
 import UploadingToast from "../swal/UploadingToast";
 import Requests from "./Requests";
 
@@ -19,6 +20,15 @@ const FileRequests =
         fetch(to)
             .then( res => res.blob() )
             .then( blob => Requests.downloadBlob(blob, name) )
+    },
+
+    remove: (to: string, name: string) =>
+    {
+        Requests.get( 
+            prefix, 'remove', { to }, 
+            () => alertSuccess('Successfully removed ' + name),
+            () => alertError('Failed to remove ' + name) 
+        )
     }
 }  
 

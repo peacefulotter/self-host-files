@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Explorer from "./Explorer";
 import Menu from "./Menu/Menu";
 
-import useSelectMode from "../../Hooks/useSelectMode";
+import useSelectMode, { UNSELECTED } from "../../Hooks/useSelectMode";
 import { DirectoryContent } from "../../types";
 
 import './index.css'
@@ -21,19 +21,27 @@ const Directory: FC<IDirectory> = ( { uploadedFiles, clearUploadedFiles } ) => {
         files: []
     });
 
-    const { selecting, selectedFiles, downloadSelected, toggleSelecting, toggleSelectFile } = useSelectMode(directory)
+    const { selecting, selectedFiles, menuFunctions, toggleSelectFile } = useSelectMode(directory, (selectedFiles) => {
+        const temp = { ...directory }
+        temp.files = directory.files.filter( (f, i) => selectedFiles[i] === UNSELECTED )
+        console.log(directory.files, temp.files, selectedFiles);
+        
+        setDirectory(temp)
+    })
 
     useEffect( () => {
         if ( uploadedFiles.length === 0 ) return;
         const temp = { ...directory }
-        temp['files'] = [...directory['files'], ...uploadedFiles ].sort()
+        temp['files'] = [...directory['files'], ...uploadedFiles].sort()
         setDirectory(temp);
         clearUploadedFiles()
     }, [uploadedFiles] )
 
+    const someAreSelected = selecting && selectedFiles.filter(f => f !== UNSELECTED).length > 0
+
     return (
         <div className="directories-wrapper">
-            <Menu downloadSelected={downloadSelected} toggleSelecting={toggleSelecting} />
+            <Menu someAreSelected={someAreSelected} {...menuFunctions} />
             <Routes>
                 <Route path="*" element={
                     <Explorer 

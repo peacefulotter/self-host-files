@@ -11,7 +11,7 @@ interface IFile {
     name: string;
     isSelected: boolean;
     selecting: boolean;
-    toggleSelectFile: () => void;
+    toggleSelectFile: (name: string) => void;
 }
 
 const RFile: FC<IFile> = ( { path, name, isSelected, selecting, toggleSelectFile } ) => {
@@ -45,7 +45,7 @@ const RFile: FC<IFile> = ( { path, name, isSelected, selecting, toggleSelectFile
     const extension = path.split('.').pop() || ''; 
     
     const onClick = () => selecting 
-        ? toggleSelectFile()
+        ? toggleSelectFile(name)
         : null // TODO: show image big
 
     const onDownloadClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -57,7 +57,7 @@ const RFile: FC<IFile> = ( { path, name, isSelected, selecting, toggleSelectFile
     const onDeleteClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault()
         e.stopPropagation()
-        console.log('delete TODO');
+        FileRequests.remove(to, name)
     }
 
     return (
@@ -81,8 +81,8 @@ const RFile: FC<IFile> = ( { path, name, isSelected, selecting, toggleSelectFile
                     onLoad={onLoad} />
             }
             <FileBtn 
-                className='inset-1 w-min h-min bg-palette-c-50'
-                iconClassName='text-palette-d-500' 
+                className='inset-1 w-min h-min bg-green-50'
+                iconClassName='text-green-500' 
                 Icon={FiCheckSquare}  
                 display={selecting && isSelected} />
             <FileBtn 

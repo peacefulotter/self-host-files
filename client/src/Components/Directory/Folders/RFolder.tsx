@@ -12,7 +12,7 @@ interface IFolder {
     name: string;
     renameFolder: (newName: string) => void;
     selecting: boolean;
-    toggleSelectFile: () => void;
+    toggleSelectFile: (name: string) => void;
 }
 
 const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
@@ -69,7 +69,7 @@ const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, t
             to={selecting ? '' : path + name + '/'} 
             className="repo-elt repo-elt-folder animate-fade-in"
             style={{pointerEvents: editing ? 'none' : 'auto'}}
-            onClick={() => selecting && toggleSelectFile()}
+            onClick={() => selecting && toggleSelectFile(name)}
         >
             <FcFolder className='repo-icon'/>
             <input 

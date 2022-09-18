@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Upload from './Components/Upload/Upload';
 import Directory from './Components/Directory/Directory';
 
+import './tailwind.css';
 import './App.css';
 
 const App = () => {

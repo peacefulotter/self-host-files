@@ -5,19 +5,20 @@ const prefix = '/files/';
 
 const FilesRequests = 
 {
-    download: (tos: string[], cb: () => void) =>
-    {
+    download: (pathname: string, filenames: string[]) => {
         Requests.get(
-            prefix, 'download', { tos }, 
-            (blob) => {
-                Requests.downloadBlob(blob, 'files.zip')
-                cb()
-            }, 
-            () => {
-                alertError('Failed to prepare files to download')
-                cb()
-            },
+            prefix, 'download', { pathname, filenames }, 
+            (blob) => Requests.downloadBlob(blob, 'files.zip'), 
+            () => alertError('Failed to prepare files to download'),
             { responseType: 'blob' }
+        )
+    },
+
+    remove: (pathname: string, filenames: string[], cb: () => void ) => {
+        Requests.get(
+            prefix, 'remove', { pathname, filenames },
+            () => { alertSuccess('Removed ' + filenames.length + ' files'); cb() },
+            () => alertError('Failed to remove ' + filenames.length + ' files')
         )
     }
 }  

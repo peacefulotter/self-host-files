@@ -9,7 +9,7 @@ interface IFolders {
     renameFolder: (i: number) => (newName: string) => void;
     path: string;
     selecting: boolean;
-    toggleSelectFile: (i: number) => () => void;
+    toggleSelectFile: (i: number) => (name: string) => void;
 }
 
 const Folders: FC<IFolders> = ( { folders, addFolder, renameFolder, path, selecting, toggleSelectFile } ) => {

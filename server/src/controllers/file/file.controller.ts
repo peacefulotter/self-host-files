@@ -1,5 +1,5 @@
 
-import { Controller, Post, UploadedFiles, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Query, Post, UploadedFiles, UseFilters, UseInterceptors, HttpException } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
@@ -31,17 +31,16 @@ export class FileController
         return { status: 200, msg: 'ok' }
     }
 
-    // @Get('download')
-    // async download( @Query() query: { to: string }, @Res() res: Response )
-    // {
-    //     try {
-    //         const { to } = query;
-    //         return await this.service.download(to, res);
-    //     }
-    //     catch { 
-    //         throw new HttpException( {
-    //             msg: 'Download failed'
-    //         }, 403 )
-    //     }
-    // }
+    @Get('remove')
+    async remove( @Query() query: { to: string } )
+    {
+        try {
+            return await this.service.remove(query.to);
+        }
+        catch { 
+            throw new HttpException( {
+                msg: 'Download failed'
+            }, 403 )
+        }
+    }
 }

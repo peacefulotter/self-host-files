@@ -1,4 +1,7 @@
 
+import promises from 'fs/promises';
+
+import { FOLDER_PATH } from '../../constants';
 
 export class FileService 
 {
@@ -13,4 +16,9 @@ export class FileService
     //     });
     //     stream.pipe(res);
     // }
+
+    async remove(to: string)
+    {
+        return await promises.unlink(FOLDER_PATH + to)
+    }
 }

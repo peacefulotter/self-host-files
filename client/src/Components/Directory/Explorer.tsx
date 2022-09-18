@@ -12,8 +12,8 @@ interface IExplorer {
     directory: DirectoryContent;
     setDirectory: React.Dispatch<React.SetStateAction<DirectoryContent>>;
     selecting: boolean;
-    selectedFiles: boolean[];
-    toggleSelectFile: (i: number) => () => void;
+    selectedFiles: (string | undefined)[];
+    toggleSelectFile: (i: number) => (name: string) => void;
 }
 
 const Explorer: FC<IExplorer> = ( { directory, setDirectory, selecting, selectedFiles, toggleSelectFile } ) => {

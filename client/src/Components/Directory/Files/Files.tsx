@@ -1,12 +1,13 @@
 import { FC } from "react";
+import { UNSELECTED } from "../../../Hooks/useSelectMode";
 import RFile from "./RFile";
 
 interface IFiles {
     files: string[];
     path: string;
-    selectedFiles: boolean[];
     selecting: boolean;
-    toggleSelectFile: (i: number) => () => void;
+    selectedFiles: (string | undefined)[];
+    toggleSelectFile: (i: number) => (name: string) => void;
 }
 
 const Files: FC<IFiles> = ( { files, path, selectedFiles, selecting, toggleSelectFile } ) => {
@@ -19,7 +20,7 @@ const Files: FC<IFiles> = ( { files, path, selectedFiles, selecting, toggleSelec
                     path={path} 
                     name={name} 
                     selecting={selecting} 
-                    isSelected={selectedFiles[i]} 
+                    isSelected={selectedFiles[i] !== UNSELECTED} 
                     toggleSelectFile={toggleSelectFile(i)}  />
             ) 
             : <p className="m-auto mt-32 text-xl text-gray-500">

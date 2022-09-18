@@ -1,32 +1,4 @@
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  .btn {
-    @apply flex items-center gap-2 rounded cursor-pointer p-2 px-4 transition-colors;
-  }
-  .btn-purple {
-    @apply btn bg-palette-b-100 hover:bg-palette-b-200;
-  }
-  .btn-active-purple {
-    @apply bg-palette-a-500 hover:bg-palette-a-600;
-  }
-  .btn-icon-purple {
-    @apply text-xl text-palette-a-700 transition-colors
-  }
-  .btn-text-purple {
-    @apply text-sm font-medium text-palette-a-700 transition-colors
-  }
-
-  .btn-upload { @apply w-8 h-8 rounded-full flex justify-center items-center cursor-pointer }
-  .btn-upload:disabled { @apply cursor-auto text-gray-300 !important }
-  /*FIXME: generic colors? HOW */
-  .btn-upload-green{ @apply btn-upload text-green-500 hover:text-green-600 }
-  .btn-upload-red { @apply btn-upload text-red-500 hover:text-red-600 }
-  .btn-upload-blue { @apply btn-upload text-blue-500 hover:text-blue-600 } 
-}
 
 /* input[type='text']:focus { box-shadow: none; } */
 
@@ -63,10 +35,6 @@ body, html {
   overflow: hidden;
 }
 
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 100;
-}
 
 @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');

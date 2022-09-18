@@ -14,7 +14,7 @@ export class FilesController
     @Get('download')
     async download( @Query() query: { tos: string[] }, @Res() res: Response )
     {
-        console.log(query.tos);
+        console.log('DOWNLOAD', query.tos);
         try {
             const { tos } = query;
             return await this.service.download(tos, res);
@@ -23,6 +23,22 @@ export class FilesController
             console.log(e);
             throw new HttpException( {
                 msg: 'Download files failed'
+            }, 403 )
+        }
+    }
+
+    @Get('remove')
+    async remove( @Query() query: { tos: string[] } )
+    {
+        console.log(query.tos);
+        try {
+            const { tos } = query;
+            return await this.service.remove(tos);
+        }
+        catch (e) {
+            console.log(e);
+            throw new HttpException( {
+                msg: 'Remove files failed'
             }, 403 )
         }
     }

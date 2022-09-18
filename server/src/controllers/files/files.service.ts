@@ -1,4 +1,5 @@
 
+import promises from 'fs/promises';
 import AdmZip from 'adm-zip';
 import { Response } from 'express';
 
@@ -20,5 +21,10 @@ export class FilesService
             'Content-Type': 'application/zip',
         } );
         return res.end(buffer)
+    }
+
+    async remove(tos: string[]) 
+    {
+        return await Promise.all( tos.map( to => promises.unlink(FOLDER_PATH + to) ))
     }
 }

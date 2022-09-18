@@ -19,9 +19,9 @@ const BreadcrumbItem = ( { children, icon, href, hasPrev }: any) => {
     const Icon = icon;
     return (
         <li className='group'>
-            <Link to={href} className=" btn-purple">
-                { icon ? <Icon className="btn-icon-purple" />  : null }
-                <p className="btn-text-purple">{ decodeURI( children ) }</p>
+            <Link to={href} className="btn">
+                { icon ? <Icon className="btn-icon" /> : null }
+                <p className="btn-text">{ decodeURI( children ) }</p>
             </Link>
         </li>
     );
