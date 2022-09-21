@@ -1,23 +1,17 @@
 
-import RequestsService from "./useRequestsService";
-
-import { alertError, alertSuccess } from "../swal/swal";
-import UploadingToast from "../swal/UploadingToast";
-
-import { Explorer, FileOrFolder } from "../types";
 import useRequestsService from "./useRequestsService";
 
-interface Args {
-    pathname: string;
-    files: FileOrFolder[];
-    folders: FileOrFolder[];
-}
+import { alertError } from "../swal/swal";
+import UploadingToast from "../swal/UploadingToast";
+import { Explorer } from "../types";
+
 
 export default () => {  
     
     const service = useRequestsService('/file/');
 
     const upload = (data: FormData, onUploadProgress: (e: ProgressEvent) => void, cb?: () => void, err?: () => void) => {
+        console.error('TODO: UPLOAD DUPLICATE -> (resolveName before)');
         service.post( 'upload', data, { onUploadProgress }, 
             () => UploadingToast.complete().then( cb ),
             () => UploadingToast.error().then( err ) 
