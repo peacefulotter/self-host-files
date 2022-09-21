@@ -7,7 +7,7 @@ import './index.css'
 
 const Directory = () => {
     return (
-        <div className="directories-wrapper">
+        <div className="w-full">
             <Menu />
             <Routes>
                 <Route path="*" element={<Explorer />} />

@@ -43,7 +43,6 @@ export const ExplorerProvider = ({ children }: any) => {
     const toggleSelect = () => setIsSelecting( prev => !prev )
 
     const toggleSelectExplorer = (i: number) => () => {
-        console.log(i);
         const temp = [...explorer];
         temp[i].selected = !temp[i].selected;
         setExplorer(temp);

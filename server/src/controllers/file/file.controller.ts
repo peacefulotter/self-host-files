@@ -1,5 +1,5 @@
 
-import { Controller, Get, Query, Post, Res, UploadedFiles, UseFilters, UseInterceptors, HttpException } from '@nestjs/common';
+import { Controller, Get, Query, Post, Res, UploadedFiles, UseFilters, UseInterceptors, HttpException, ValidationPipe } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Response } from 'express';
@@ -7,8 +7,8 @@ import { Response } from 'express';
 import { FileService } from './file.service';
 
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
+import ExplorerFilter from '../../dto/ExplorerDto';
 import { FOLDER_PATH } from '../../constants';
-import { Explorer } from '../../types';
 
 @Controller('file')
 @UseFilters(new HttpExceptionFilter())
@@ -48,10 +48,11 @@ export class FileController
     }
 
     @Get('download/many')
-    async downloadMany( @Query() query: { pathname: string, explorer: Explorer }, @Res() res: Response )
+    async downloadMany( @Query(new ValidationPipe({ transform: true })) filter: ExplorerFilter, @Res() res: Response )
     {
+        console.log(filter);
         try {
-            const { pathname, explorer } = query;
+            const { pathname, explorer } = filter;
             return await this.service.downloadMany(pathname, explorer, res);
         }
         catch (e) {

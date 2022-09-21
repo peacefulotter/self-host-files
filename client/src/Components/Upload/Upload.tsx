@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import FileList from "./FileList";
 import Header from "./Header";
@@ -10,6 +11,7 @@ import { UploadState } from "../../types";
 import './index.css'
 
 const Upload = () => {
+	const [opened, setOpened] = useState<boolean>(false)
     const [files, setFiles] = useState<File[]>([]);
 	const [state, setState] = useState<UploadState>('disabled')
 	const [progress, setProgress] = useState<number>(0)
@@ -57,9 +59,16 @@ const Upload = () => {
 		setState('disabled')
 	}
 
+	const toggleOpen = () => setOpened(prev => !prev )
+
+	const BurgerIcon = opened ? FiChevronLeft : FiChevronRight 
+
     return (
 		<>
-		<form className="upload-form">
+		<form className="relative flex flex-col items-center gap-3 p-4 bg-gray-100 transition-transform shadow-md" style={{transform: opened ? '' : 'translateX(-100%)'}}>
+			<div className="absolute p-3 ml-auto top-0 right-0 translate-x-full bg-gray-100 hover:bg-gray-200 rounded cursor-pointer transition-colors">
+				<BurgerIcon className="text-3xl text-gray-400" onClick={toggleOpen} />
+			</div>
 			<Header state={state} addFiles={addFiles} remFiles={remFiles} uploadFiles={uploadFiles} />
 			<FileList files={files} remFile={remFile}/>
 		</form>

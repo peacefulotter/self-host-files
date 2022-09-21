@@ -20,12 +20,11 @@ export class FileService
     {
         const zip = new AdmZip();
         console.error('FOLDER NOT SUPPORTED')
-        explorer.forEach( fn => zip.addLocalFile(FOLDER_PATH + pathname + fn) )
+        explorer.forEach( ({name}) => zip.addLocalFile(FOLDER_PATH + pathname + name) )
         const buffer: Buffer = zip.toBuffer();
 
-        const file = "test.zip";
         res.writeHead( 200, {
-            'Content-Disposition': `attachment; filename='${file}'`,
+            'Content-Disposition': `attachment; filename='files.zip'`,
             'Content-Type': 'application/zip',
         } );
         return res.end(buffer)

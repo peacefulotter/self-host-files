@@ -30,8 +30,7 @@ body, html {
 .App {
   width: 100vw;
   height: 100vh;
-  display: grid;
-  grid-template-columns: 20% 80%;
+  display: flex;
   overflow: hidden;
 }
 
