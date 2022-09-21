@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import Upload from './Components/Upload/Upload';
@@ -6,18 +5,16 @@ import Directory from './Components/Directory/Directory';
 
 import './tailwind.css';
 import './App.css';
+import { ExplorerProvider } from './context/ExplorerCtx';
 
 const App = () => {
-
-	const [tempFiles, setTempFiles] = useState<string[]>([])
-
-	const clearTempFiles = () => setTempFiles([])
-
 	return (
 		<BrowserRouter>
 			<div className="App">
-				<Upload newUploadedFiles={setTempFiles} />
-				<Directory uploadedFiles={tempFiles} clearUploadedFiles={clearTempFiles} />
+				<ExplorerProvider>
+					<Upload />
+					<Directory />
+				</ExplorerProvider>
 			</div>
 		</BrowserRouter>
 	);

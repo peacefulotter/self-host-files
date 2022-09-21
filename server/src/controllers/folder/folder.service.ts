@@ -14,8 +14,7 @@ export class FolderService
 
     async read(path: string)
     {    
-        const folders = []
-        const files = []
+        const explorer = []
 
         const decodedPath = decodeURI(path)
         const currentPath = this.getPath( decodedPath )
@@ -26,19 +25,15 @@ export class FolderService
             const filePath = currentPath + '/' + filename;
             const stats = await promises.stat(filePath)
             const isDirectory = stats.isDirectory()
-            if ( isDirectory ) folders.push( filename )
-            else files.push( filename )
+            explorer.push({name: filename, selected: false, type: isDirectory ? 'folder' : 'file'})
         }
         
-        return { folders, files };
+        return explorer;
     }
 
     async create(path: string, name: string) 
     {
-        return await promises.mkdir( 
-            this.getPath(path, name), 
-            CREATE_FOLDER_MODE 
-        )
+        return await promises.mkdir( this.getPath(path, name), CREATE_FOLDER_MODE )
     }
 
     async rename(path: string, oldName: string, newName: string)

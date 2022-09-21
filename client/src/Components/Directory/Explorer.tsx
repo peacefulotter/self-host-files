@@ -1,56 +1,51 @@
 
-import { FC, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
-import Folders from './Folders/Folders';
-import Files from './Files/Files';
+import RFolder from './Folders/RFolder';
+import RFile from './Files/RFile';
+import AddFolderBtn from './Folders/AddFolderBtn';
 
-import FolderRequests from '../../requests/FolderReq';
-import { DirectoryContent } from '../../types';
+import { useExplorerCtx } from '../../context/ExplorerCtx';
+import { FileOrFolder } from '../../types';
+import { useMemo } from 'react';
 
-interface IExplorer {
-    directory: DirectoryContent;
-    setDirectory: React.Dispatch<React.SetStateAction<DirectoryContent>>;
-    selecting: boolean;
-    selectedFiles: (string | undefined)[];
-    toggleSelectFile: (i: number) => (name: string) => void;
-}
+interface FileOrFolderWithIndex extends FileOrFolder { i: number; }
 
-const Explorer: FC<IExplorer> = ( { directory, setDirectory, selecting, selectedFiles, toggleSelectFile } ) => {
+const Explorer = () => {
 
-    const { pathname } = useLocation();
+    const { explorer, renameFolder, toggleSelectExplorer } = useExplorerCtx();
 
-    useEffect( () => {
-        FolderRequests.read( pathname, setDirectory )        
-    }, [pathname] )
+    // FIXME: useMemo??
+    const [files, folders] = useMemo( () => explorer.reduce( (acc, cur, i) => {
+        acc[cur.type === 'file' ? 0 : 1].push({...cur, i});
+        return acc;
+    }, [[], []] as [FileOrFolderWithIndex[], FileOrFolderWithIndex[]]), [explorer] )
 
-    const { folders, files } = directory;
-
-    const updateFolder = (cb: (temp: DirectoryContent) => DirectoryContent) => {
-        const temp = cb( { ...directory } )
-        temp['folders'] = temp['folders'].sort()
-        setDirectory(temp);
-    }
-
-    const addFolder = (name: string) => {
-        updateFolder( temp => {
-            temp['folders'] = [...directory['folders'], name]
-            return temp;
-        } )
-    }
-
-    const renameFolder = (i: number) => (name: string) => {
-        updateFolder( temp => {
-            temp['folders'][i] = name
-            return temp;
-        } )
-    }
-    
+    // FIXME: pass i or functions??
     return (
         <div className="directories">
-            <Folders folders={folders} addFolder={addFolder} renameFolder={renameFolder} selecting={selecting} toggleSelectFile={toggleSelectFile} path={pathname} />
+            { folders.map( (folder, i) => 
+                <RFolder 
+                    key={`folder-${i}`} 
+                    folders={folders} 
+                    folder={folder} 
+                    renameFolder={renameFolder(folder.i)} 
+                    toggleSelect={toggleSelectExplorer(folder.i)} />
+            ) }
+            <AddFolderBtn />
+
             <div className='w-full' />
-            <Files files={files} selectedFiles={selectedFiles} selecting={selecting} toggleSelectFile={toggleSelectFile} path={pathname} />
+            
+            { files.length > 0 
+                ? files.map( ( file, i ) => 
+                    <RFile 
+                        key={`file-${i}`} 
+                        file={file} 
+                        i={file.i} />
+                ) 
+                : <p className="m-auto mt-32 text-xl text-gray-500">
+                    this folder contains no files
+                </p>
+            }
         </div>
     )
 }

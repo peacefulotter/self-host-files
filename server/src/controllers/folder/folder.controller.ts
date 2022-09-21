@@ -12,24 +12,24 @@ export class FolderController
     constructor(private readonly service: FolderService) {}
 
     @Get('read')
-    async read( @Query() query: { path: string } )
+    async read( @Query() query: { pathname: string } )
     {
-        const { path } = query;
+        const { pathname } = query;
         try {
-            return await this.service.read( path )
+            return await this.service.read( pathname )
         }
         catch {
-            const msg = `Reading folder ${decodeURI(path)} failed`
+            const msg = `Reading folder ${decodeURI(pathname)} failed`
             throw new HttpException(msg, HttpStatus.NOT_FOUND )
         }
     }
 
     @Get('create')
-    async create( @Query() query: { path: string, name: string } )
+    async create( @Query() query: { pathname: string, name: string } )
     {
         try {
-            const { path, name } = query;
-            return await this.service.create(path, name);
+            const { pathname, name } = query;
+            return await this.service.create(pathname, name);
         } 
         catch (e) {
             throw new HttpException('create failed', 403)
@@ -37,11 +37,11 @@ export class FolderController
     }
 
     @Get('rename')
-    async rename( @Query() query: { path: string, oldName: string, newName: string } )
+    async rename( @Query() query: { pathname: string, oldName: string, newName: string } )
     {
         try {
-            const { path, oldName, newName } = query;
-            return await this.service.rename(path, oldName, newName);
+            const { pathname, oldName, newName } = query;
+            return await this.service.rename(pathname, oldName, newName);
         } 
         catch (e) {
             throw new HttpException('rename failed', 403)

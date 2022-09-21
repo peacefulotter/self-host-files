@@ -1,18 +1,17 @@
 
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { FcFolder } from 'react-icons/fc'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useExplorerCtx } from '../../../context/ExplorerCtx';
 
 import { alertError, alertWarning } from '../../../swal/swal';
-import FolderRequests from '../../../requests/FolderReq';
+import { FileOrFolder } from '../../../types';
 
 interface IFolder {
-    folders: string[];
-    path: string;
-    name: string;
-    renameFolder: (newName: string) => void;
-    selecting: boolean;
-    toggleSelectFile: (name: string) => void;
+    folders: FileOrFolder[];
+    folder: FileOrFolder;
+    renameFolder: (newName: string, err: () => void) => void;
+    toggleSelect: () => void;
 }
 
 const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
@@ -22,7 +21,11 @@ const catchEnter = ( e: KeyboardEvent<HTMLInputElement> ) => {
     return true;
 }
 
-const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, toggleSelectFile } ) => {
+const RFolder: FC<IFolder> = ( { folders, folder, renameFolder, toggleSelect } ) => {
+
+    const { name, selected } = folder;
+    const { pathname } = useLocation()
+    const { isSelecting } = useExplorerCtx();
 
     const [editing, setEditing] = useState<boolean>(false);
     const [editName, setEditName] = useState<string>(name);
@@ -36,19 +39,13 @@ const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, t
         setEditing(false)
         if ( editName === name ) return;
         else if ( editName.length === 0 ) return setEditName(name)
-        else if ( folders.includes(editName) )
+        else if ( folders.some( f => f.name === editName ) )
         {
             alertWarning( 'Folder name already used' )
             return setEditName(name)
         }
-        FolderRequests.rename(
-            path, name, editName, 
-            () => renameFolder(editName),
-            () => {
-                setEditName(name)
-                alertError( 'Renaming folder failed' )
-            }
-        ) 
+
+        renameFolder( editName, () => setEditName(name) )
     }
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) =>
@@ -66,10 +63,10 @@ const RFolder: FC<IFolder> = ( { folders, path, name, renameFolder, selecting, t
 
     return (
         <Link 
-            to={selecting ? '' : path + name + '/'} 
+            to={isSelecting ? '' : pathname + name + '/'} 
             className="repo-elt repo-elt-folder animate-fade-in"
             style={{pointerEvents: editing ? 'none' : 'auto'}}
-            onClick={() => selecting && toggleSelectFile(name)}
+            onClick={() => isSelecting && toggleSelect()}
         >
             <FcFolder className='repo-icon'/>
             <input 

@@ -9,6 +9,8 @@ interface BtnStyle {
     childrenCheck: (isChecked: boolean) => string; 
 }
 
+// TODO: refactor
+
 const getStyle = (color: string): BtnStyle => {
     const hoverBgLow = `hover:bg-${color}-200`
     const bgMid = `bg-${color}-500`

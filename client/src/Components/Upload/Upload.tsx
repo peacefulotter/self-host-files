@@ -1,25 +1,20 @@
-import React, { FC, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
 
 import FileList from "./FileList";
 import Header from "./Header";
 
-import FileRequests from "../../requests/FileReq";
+import { useExplorerCtx } from "../../context/ExplorerCtx";
 import UploadingToast from "../../swal/UploadingToast";
 import { UploadState } from "../../types";
 
 import './index.css'
 
-interface IUpload {
-	newUploadedFiles: (files: string[]) => void;
-}
-
-const Upload: FC<IUpload> = ( { newUploadedFiles } ) => {
+const Upload = () => {
     const [files, setFiles] = useState<File[]>([]);
 	const [state, setState] = useState<UploadState>('disabled')
 	const [progress, setProgress] = useState<number>(0)
 
-	const { pathname } = useLocation()
+	const { upload } = useExplorerCtx();
 
 	const uploadFiles = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -27,15 +22,10 @@ const Upload: FC<IUpload> = ( { newUploadedFiles } ) => {
 		setState('uploading')
 		UploadingToast.uploading();
 
-		const data = new FormData();
-		data.append('pathname', pathname)
-		files.forEach( file => data.append('files[]', file, file.name) )
-
-		// TODO: return the files that have succesfully been imported
-		FileRequests.upload( data, 
-			( { loaded, total } ) => setProgress( (loaded / total) * 100 ), 
+		upload(
+			files, 
+			( { loaded, total }: ProgressEvent ) => setProgress( (loaded / total) * 100 ),
 			() => { 
-				newUploadedFiles( files.map( f => f.name ) )
 				setFiles([]);
 				setState('complete');
 				setProgress(0);
